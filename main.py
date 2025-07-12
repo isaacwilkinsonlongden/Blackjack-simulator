@@ -63,11 +63,6 @@ class Player:
     
     def show_hand(self):
         return ' '.join(str(card) for card in self.hand)
-    
-
-p = Player("Test")
-p.add_card(Card("A", "♠"))
-p.add_card(Card("K", "♦"))
-print(p.get_hand_value())  # Should print 21
+        
 
 
