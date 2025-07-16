@@ -17,18 +17,15 @@ def lose(player, bet):
     player.adjust_balance(-bet)
     print("You lose!")
     dash_21()
-    press_enter_to_continue()
 
 
 def win(player, bet):
     player.adjust_balance(bet)
     print("You win!")
     dash_21()
-    press_enter_to_continue()
 
 
 def draw(player):
     print("It's a draw!")
     dash_21()
-    press_enter_to_continue()
     

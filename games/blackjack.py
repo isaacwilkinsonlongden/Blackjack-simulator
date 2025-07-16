@@ -39,42 +39,43 @@ class BlackjackPlayer(Player):
 
 
 def play_blackjack(player):
-    clear_screen()
-    dash_21()
-    print("Welcome to Blackjack!")
-    dash_21()
+    while True:
+        clear_screen()
+        dash_21()
+        print("Welcome to Blackjack!")
+        dash_21()
 
-    bet = get_bet(player)
-    deck = Deck()
-    deck.shuffle()
+        bet = get_bet(player)
+        deck = Deck()
+        deck.shuffle()
 
-    p = BlackjackPlayer(player.name, player.balance)
-    dealer = BlackjackPlayer("Dealer")
-    p.reset_hand()
-    dealer.reset_hand()
+        p = BlackjackPlayer(player.name, player.balance)
+        dealer = BlackjackPlayer("Dealer")
+        p.reset_hand()
+        dealer.reset_hand()
 
-    for _ in range(2):
-        p.add_card(deck.deal_card())
-        dealer.add_card(deck.deal_card())
+        for _ in range(2):
+            p.add_card(deck.deal_card())
+            dealer.add_card(deck.deal_card())
 
-    if player_turn(p, dealer, deck):
-        show_results(p, dealer)
-        lose(player, bet)
-        return
+        if player_turn(p, dealer, deck):
+            show_results(p, dealer)
+            lose(player, bet)
+        elif dealer_turn(dealer, p, deck):
+            show_results(p, dealer)
+            win(player, bet)
+        else:
+            show_results(p, dealer)
+            if p.get_hand_value() > dealer.get_hand_value():
+                win(player, bet)
+            elif p.get_hand_value() < dealer.get_hand_value():
+                lose(player, bet)
+            else:
+                draw(player)
 
-    if dealer_turn(dealer, p, deck):
-        show_results(p, dealer)
-        win(player, bet)
-        return
-
-    show_results(p, dealer)
-    if p.get_hand_value() > dealer.get_hand_value():
-        win(player, bet)
-    elif p.get_hand_value() < dealer.get_hand_value():
-        lose(player, bet)
-    else:
-        draw(player)
-    press_enter_to_continue()
+        play_again = input("Play another round? (y/n): ").strip().lower()
+        if play_again not in ['y', 'yes']:
+            return
 
 
 def get_bet(player):
