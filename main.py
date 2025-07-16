@@ -1,68 +1,30 @@
-import random
+from player import Player
+from games.blackjack import play_blackjack
+from utils import clear_screen
 
 
-class Card:
-    def __init__(self, rank, suit):
-        self.rank = rank
-        self.suit = suit
+def main():
+    clear_screen()
+    name = input("Enter your name: ")
+    player = Player(name)
 
-    def __str__(self):
-        return self.rank + self.suit 
-    
-    def __repr__(self):
-        return f"Card('{self.rank}', '{self.suit}')"
+    while True:
+        clear_screen()
+        print(f"Welcome to the Casino, {player.name}!")
+        print(f"Balance: ${player.balance}")
+        print("\n1. Play Blackjack")
+        print("2. Quit")
 
-    
-class Deck:
-    def __init__(self):
-        self.deck = []
-        self.build_deck()
+        choice = input("Choose an option: ").strip()
 
-    def build_deck(self):
-        suits = ["♥", "♦", "♣", "♠"]
-        ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10",
-                  "J", "Q", "K", "A"]
-        
-        for suit in suits:
-            for rank in ranks:
-                self.deck.append(Card(rank, suit))
-
-    def shuffle(self):
-        random.shuffle(self.deck)
-
-    def deal_card(self):
-        return self.deck.pop()
-    
-
-class Player:
-    def __init__(self, name):
-        self.name = name
-        self.hand = []
-
-    def add_card(self, card):
-        self.hand.append(card)
-
-    def get_hand_value(self):
-        total = 0
-        ace_count = 0
-
-        for card in self.hand:
-            if card.rank.isdigit():
-                total += int(card.rank)
-            elif card.rank in ["J", "Q", "K"]:
-                total += 10
-            elif card.rank == "A":
-                total += 11
-                ace_count += 1
-
-        while total > 21 and ace_count > 0:
-            total -= 10
-            ace_count -= 1
-
-        return total
-    
-    def show_hand(self):
-        return ' '.join(str(card) for card in self.hand)
-        
+        if choice == "1":
+            play_blackjack(player)
+        elif choice == "2":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice.")
 
 
+if __name__ == "__main__":
+    main()
