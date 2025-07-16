@@ -1,5 +1,5 @@
 import time
-from utils import clear_screen, dash_21, press_enter_to_continue, lose, win, draw
+from utils import clear_screen, dash_21, lose, win, draw, game_intro, get_bet
 from cards import Deck
 from player import Player
 
@@ -40,10 +40,8 @@ class BlackjackPlayer(Player):
 
 def play_blackjack(player):
     while True:
-        clear_screen()
-        dash_21()
-        print("Welcome to Blackjack!")
-        dash_21()
+        game_name = "Blackjack"
+        game_intro(game_name)
 
         bet = get_bet(player)
         deck = Deck()
@@ -78,17 +76,6 @@ def play_blackjack(player):
             return
 
 
-def get_bet(player):
-    while True:
-        try:
-            bet = int(input(f"{player.name}, you have ${player.balance}. Place your bet: "))
-            if 1 <= bet <= player.balance:
-                return bet
-            print("Invalid bet.")
-        except ValueError:
-            print("Please enter a number.")
-
-
 def player_turn(p, dealer, deck):
     while p.get_hand_value() <= 21:
         player_turn_show_hands(p, dealer)
@@ -97,11 +84,13 @@ def player_turn(p, dealer, deck):
             break
         elif choice in ["hit", "h"]:
             p.add_card(deck.deal_card())
+
     if p.get_hand_value() > 21:
         player_turn_show_hands(p, dealer)
         print("YOU BUSTED!")
         time.sleep(2)
         return True
+    return False
 
 
 def dealer_turn(dealer, p, deck):
@@ -118,6 +107,7 @@ def dealer_turn(dealer, p, deck):
     
     dealer_turn_show_hands(dealer, p)
     time.sleep(2)
+    return False
 
 
 def show_results(p, dealer):
@@ -135,6 +125,7 @@ def player_turn_show_hands(p, dealer):
     dash_21()
     print(f"Your hand: {p.show_hand()} ({p.get_hand_value()})")
     dash_21()
+
 
 def dealer_turn_show_hands(dealer, p):
     clear_screen()

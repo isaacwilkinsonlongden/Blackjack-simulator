@@ -28,4 +28,22 @@ def win(player, bet):
 def draw(player):
     print("It's a draw!")
     dash_21()
+
+
+def game_intro(game_name):
+    clear_screen()
+    dash_21()
+    print(f"Welcome to {game_name}!")
+    dash_21()
+
+
+def get_bet(player):
+    while True:
+        try:
+            bet = int(input(f"{player.name}, you have ${player.balance}. Place your bet: "))
+            if 1 <= bet <= player.balance:
+                return bet
+            print("Invalid bet.")
+        except ValueError:
+            print("Please enter a number.")
     

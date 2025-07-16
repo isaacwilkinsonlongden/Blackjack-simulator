@@ -15,7 +15,7 @@ class Card:
     
 class Deck:
     def __init__(self):
-        self.deck = []
+        self.cards = []
         self.build_deck()
 
     def build_deck(self):
@@ -25,10 +25,10 @@ class Deck:
         
         for suit in suits:
             for rank in ranks:
-                self.deck.append(Card(rank, suit))
+                self.cards.append(Card(rank, suit))
 
     def shuffle(self):
-        random.shuffle(self.deck)
+        random.shuffle(self.cards)
 
     def deal_card(self):
-        return self.deck.pop()
+        return self.cards.pop()
