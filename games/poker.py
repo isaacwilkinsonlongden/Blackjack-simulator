@@ -38,3 +38,24 @@ def play_poker(player):
     print(f"CPU hand:  {cpu.show_hand(hide=True)}")
     dash_21()
     press_enter_to_continue()
+
+    community_cards = []
+    for i in range(3):
+        community_cards = next_round(deck, community_cards, flop=(i == 0))
+
+
+def next_round(deck, community_cards, flop=False):
+    clear_screen()
+    deck.deal_card()  # Burn a card
+
+    if flop:
+        community_cards = [deck.deal_card() for _ in range(3)]
+    else:
+        community_cards.append(deck.deal_card())
+
+    dash_21()
+    print(f"Community cards: {' '.join(str(card) for card in community_cards)}")
+    dash_21()
+    press_enter_to_continue()
+
+    return community_cards
