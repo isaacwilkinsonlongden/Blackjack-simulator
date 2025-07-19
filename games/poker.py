@@ -9,6 +9,7 @@ class PokerPlayer(Player):
         super().__init__(name, balance)
         self.hole_cards = []
         self.in_hand = True
+        self.is_dealer = False
 
     def deal_hole_cards(self, cards):
         self.hole_cards = cards
@@ -28,20 +29,31 @@ def play_poker(player):
 
     human = PokerPlayer(player.name, player.balance)
     cpu = PokerPlayer("CPU")
+    players = [human, cpu]
 
-    human.deal_hole_cards([deck.deal_card(), deck.deal_card()])
-    cpu.deal_hole_cards([deck.deal_card(), deck.deal_card()])
+    if not hasattr(play_poker, "dealer_index"):
+        play_poker.dealer_index = 0
+
+    for i, p in enumerate(players):
+        p.is_dealer = (i == play_poker.dealer_index)
+
+    for p in players:
+        p.deal_hole_cards([deck.deal_card(), deck.deal_card()])
 
     clear_screen()
     dash_21()
     print(f"Your hand: {human.show_hand()}")
-    print(f"CPU hand:  {cpu.show_hand(hide=True)}")
+    for p in players:
+        if p != human:
+            print(f"{p.name}'s hand: {p.show_hand(hide=True)}")
     dash_21()
     press_enter_to_continue()
 
     community_cards = []
     for i in range(3):
         community_cards = next_round(deck, community_cards, flop=(i == 0))
+
+    play_poker.dealer_index = (play_poker.dealer_index + 1) % len(players)
 
 
 def next_round(deck, community_cards, flop=False):
