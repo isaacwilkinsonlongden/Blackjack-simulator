@@ -27,6 +27,9 @@ def play_poker(player):
     deck = Deck()
     deck.shuffle()
 
+    small_blind = 10
+    big_blind = 20
+
     human = PokerPlayer(player.name, player.balance)
     cpu = PokerPlayer("CPU")
     players = [human, cpu]
@@ -36,6 +39,23 @@ def play_poker(player):
 
     for i, p in enumerate(players):
         p.is_dealer = (i == play_poker.dealer_index)
+
+    dealer = players[play_poker.dealer_index]
+    sb = dealer
+    bb = players[(play_poker.dealer_index + 1) % len(players)]
+    pot = 0
+    sb.adjust_balance(-small_blind)
+    bb.adjust_balance(-big_blind)
+    pot += small_blind + big_blind
+
+    clear_screen()
+    dash_21()
+    print(f"{dealer.name} is the dealer")
+    print(f"{sb.name} posts small blind of ${small_blind}")
+    print(f"{bb.name} posts big blind of ${big_blind}")
+    print(f"Pot: ${pot}")
+    dash_21()
+    press_enter_to_continue()
 
     for p in players:
         p.deal_hole_cards([deck.deal_card(), deck.deal_card()])
